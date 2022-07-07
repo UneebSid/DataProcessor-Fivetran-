@@ -1,23 +1,20 @@
+import com.google.api.client.googleapis.json.GoogleJsonError;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
-import com.google.api.services.sheets.v4.model.Spreadsheet;
-import com.google.api.services.sheets.v4.model.SpreadsheetProperties;
-import com.google.auth.http.HttpCredentialsAdapter;
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.api.client.googleapis.json.GoogleJsonError;
-import com.google.api.client.googleapis.json.GoogleJsonResponseException;
-import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.services.sheets.v4.model.UpdateValuesResponse;
 import com.google.api.services.sheets.v4.model.ValueRange;
-import org.apache.commons.lang3.RandomStringUtils;
-import com.github.javafaker.Faker;
+import com.google.auth.http.HttpCredentialsAdapter;
+import com.google.auth.oauth2.GoogleCredentials;
 
 import java.io.IOException;
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 
 /* Class to demonstrate the use of Spreadsheet Write and Read API */
@@ -67,23 +64,75 @@ public class DataProcessor {
         return result;
     }
 
+    public static  String randomNumericStrings(int length)
+    {
+        String numbers = "0123456789";
+
+        StringBuilder stringBuilder = new StringBuilder();
+        Random random = new Random();
+
+        for (int i=0; i<length; i++)
+        {
+            int index = random.nextInt(numbers.length());
+            char randomNum = numbers.charAt(index);
+            stringBuilder.append(randomNum);
+
+        }
+        return stringBuilder.toString();
+    }
+
+    public static String randomStates()
+    {
+        String[] countries = {"New York","Texas",
+                               "Boston","California", "Arizona",
+                                 "Arkansas", "Florida", "Virginia", "Alaska", "Washington"};
+        Random random = new Random();
+        int randomCountry = random.nextInt(countries.length);
+        return countries[randomCountry];
+    }
+
+    public static String randomStrings()
+    {
+        String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
+        StringBuilder sb = new StringBuilder();
+        Random random = new Random();
+        int length = 11;
+        boolean first = true;
+        for (int i=0; i<length; i++)
+        {
+            int index = random.nextInt(letters.length());
+            char randomChar;
+            if(first) {
+                randomChar = letters.charAt(index);
+                first = false;
+            }
+            else
+            {
+                randomChar = lowerCaseLetters.charAt(index);
+            }
+
+            sb.append(randomChar);
+        }
+
+        return sb.toString();
+    }
 
     public static List<Object> dataGeneration()
     {
         List<Object> list = new ArrayList<Object>();
-        Faker faker = new Faker();
-        String firstName = faker.name().firstName();
-        String lastName = faker.name().lastName();
-        String phone = faker.phoneNumber().cellPhone();
-        String state = faker.address().state();
-        String city = faker.address().city();
-        String zip = RandomStringUtils.randomNumeric(5);
 
+
+        String firstName = randomStrings();
+        String lastName = randomStrings();
+        String phone = randomNumericStrings(10);
+        String state = randomStates();
+
+        String zip = randomNumericStrings(5);
             list.add(firstName);
             list.add(lastName);
             list.add(phone);
             list.add(state);
-            list.add(city);
             list.add(zip);
 
         return list;
@@ -103,13 +152,6 @@ public class DataProcessor {
     }
 
 
-    public static void main(String[] args) throws IOException {
-
-
-
-
-
-    }
 }
 
 
