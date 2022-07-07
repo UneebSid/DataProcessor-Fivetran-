@@ -18,7 +18,7 @@ import java.util.Random;
 
 
 /* Class to demonstrate the use of Spreadsheet Write and Read API */
-public class DataProcessor {
+public class DataGenerator {
 
 
 
