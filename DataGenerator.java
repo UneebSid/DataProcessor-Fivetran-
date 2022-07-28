@@ -78,6 +78,7 @@ public class DataGenerator {
             stringBuilder.append(randomNum);
 
         }
+
         return stringBuilder.toString();
     }
 

@@ -6,6 +6,7 @@ public class Main {
 
 
 
+
     public static void main(String[] args) throws Exception {
 
         //instantiate CreateSheet object
@@ -36,7 +37,7 @@ public class Main {
        List<List<Object>> aList = dataGenerator.addDataToList();
 
         //uploading data to google sheet
-        dataGenerator.updateValues(id,"Sheet1!A2:Z","RAW",aList);
+        dataGenerator.updateValues("id","Sheet1!A2:Z","USER_ENTERED",aList);
 
         CreateSheet.shareFile(id,"uu1997@gmail.com", "@gmail.com");
 
@@ -45,8 +46,12 @@ public class Main {
 
 
 
+        DataExtractor.dataParser(data);
 
 
+     String jsonString = DataExtractor.convertToJson(data.get(0));
+
+     DataExtractor.validateSchema(jsonString);
 
     }
 }
