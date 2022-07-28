@@ -51,7 +51,6 @@ public class DataExtractor {
 
     private static void parseData(List<Object> list) {
         long value;
-        CustomerInfo customerInfo = new CustomerInfo("","",0,"",0);
 
         for (int i = 0; i < list.size(); i++) {
 
