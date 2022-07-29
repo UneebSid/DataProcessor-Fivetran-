@@ -14,7 +14,9 @@ import org.json.JSONTokener;
 
 import java.io.*;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -106,24 +108,18 @@ public class DataExtractor {
     }
 
     public static String convertToJson(List<Object> data) throws IOException {
-        String firstName="";
-        String lastName="";
-        long phone = 0;
-        String state = "";
-        long zip = 0;
 
-                 firstName = data.get(0).toString();
-                 lastName = data.get(1).toString();
-                 phone = Long.parseLong(data.get(2).toString());
-                 state = data.get(3).toString();
-                 zip = Integer.parseInt(data.get(4).toString());
+                 Map<String,Object> map = new HashMap<>();
+                 map.put("firstName", data.get(0));
+                 map.put("lastName", data.get(1));
+                 map.put("phoneNumber", data.get(2));
+                 map.put("state", data.get(3));
+                 map.put("zipcode", data.get(4));
 
-
-            CustomerInfo customerInfo = new CustomerInfo(firstName,lastName,phone,state,zip);
 
 
                 Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                String json = gson.toJson(customerInfo);
+                String json = gson.toJson(map);
 
 
         return json;
@@ -152,7 +148,6 @@ public class DataExtractor {
         Schema schemaValid = SchemaLoader.load(jsonSchema);
         schemaValid.validate(jsonObject);
 
-        System.out.println("done");
 
     }
 
