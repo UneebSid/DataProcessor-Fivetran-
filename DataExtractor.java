@@ -15,6 +15,8 @@ import org.json.JSONTokener;
 import java.io.*;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DataExtractor {
 
@@ -52,24 +54,41 @@ public class DataExtractor {
     private static void parseData(List<Object> list) {
         long value;
 
+        // to check if there is any occurrences of at least one digit.
+        Pattern pattern = Pattern.compile("[0-9]");
+        //to look for any occurrence of any character or characters in a string
+        Pattern alphaPattern = Pattern.compile("[abcdefghijklmnopqrstuvwxyz]", Pattern.CASE_INSENSITIVE);
+
+        if(list.size()<5)
+        {
+            list.add("");
+        }
+
         for (int i = 0; i < list.size(); i++) {
+                //if we have a match in a given string store it in a Matcher Object.
+            Matcher matcher = pattern.matcher(list.get(i).toString());
+            Matcher charMatcher = alphaPattern.matcher(list.get(i).toString());
 
 
-                //column 3(phone number) or column 5(zipcode)
            try {
+               //column 3(phone number) or column 5(zipcode)
                if (i == 2 || i == 4) {
-
-                   if (list.get(i).toString().isEmpty()) {
-
+                            //if column 3 or 5 has no value or if they are not numeric
+                   if (list.get(i).toString().isEmpty() || charMatcher.find()) {
+                        //set value to zero
                        list.set(i, 0);
-                   } else {
+                   }
+
+                   else {
 
                        value = Long.parseLong(list.get(i).toString());
                        list.set(i, value);
                    }
 
                } else if (i == 0 || i == 1 || i == 3) {
-                   if (list.get(i).toString().isEmpty()) {
+
+                   //if column 1,2,or 4 contains an empty string or numbers
+                   if (list.get(i).toString().isEmpty() || matcher.find()) {
                        list.set(i, "null");
                    }
 
