@@ -2,7 +2,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DataTransfer {
+public class DataLoader {
 
     public static void dataConnection() throws SQLException {
         Connection connection = null;
@@ -10,7 +10,7 @@ public class DataTransfer {
 
         try {
 
-            String url = "jdbc:mysql://localhost:3306/sys";
+            String url = "jdbc:mysql://localhost:3306/JavaDatabase";
             String user = "root";
             String password = "Yaqoob50";
 
