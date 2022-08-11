@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DataTransformer {
+
 
 
     public static void dataParser(List<List<Object>> dataList)
@@ -24,7 +26,6 @@ public class DataTransformer {
 
     }
 
-
     private static void parseData(List<Object> list) {
         long value;
 
@@ -34,11 +35,14 @@ public class DataTransformer {
         Pattern alphaPattern = Pattern.compile("[abcdefghijklmnopqrstuvwxyz]", Pattern.CASE_INSENSITIVE);
 
         if(list.size()<5)
+
         {
             list.add("");
         }
 
-        for (int i = 0; i < list.size(); i++) {
+        for (int i = 0; i < list.size(); i++)
+
+        {
             //if we have a match in a given string store it in a Matcher Object.
             Matcher matcher = pattern.matcher(list.get(i).toString());
             Matcher charMatcher = alphaPattern.matcher(list.get(i).toString());
@@ -46,21 +50,31 @@ public class DataTransformer {
 
             try {
                 //column 3(phone number) or column 5(zipcode)
-                if (i == 2 || i == 4) {
+                if (i == 2 || i == 4)
+
+                {
                     //if column 3 or 5 has no value or if they are not numeric
-                    if (list.get(i).toString().isEmpty() || charMatcher.find()) {
+                    if (list.get(i).toString().isEmpty() || charMatcher.find())
+
+                    {
                         //set value to zero
                         list.set(i, 0);
                     }
+
 
                     else {
 
                         value = Long.parseLong(list.get(i).toString());
                         list.set(i, value);
+
+
                     }
 
-                } else if (i == 0 || i == 1 || i == 3) {
+                }
 
+                else if (i == 0 || i == 1 || i == 3)
+
+                {
                     //if column 1,2,or 4 contains an empty string or numbers
                     if (list.get(i).toString().isEmpty() || matcher.find()) {
                         list.set(i, "null");
@@ -79,15 +93,42 @@ public class DataTransformer {
 
     }
 
-    public static String convertToJson(List<Object> data) throws IOException {
+    public static ClientInfo getClientObject(String jsonString)
+
+    {
+        Gson gson = new Gson();
+        ClientInfo clientInfo = gson.fromJson(jsonString,ClientInfo.class);
+        return clientInfo;
+
+    }
+
+    public static List<ClientInfo> convertedJsonValidation(List<List<Object>> listOfDataList) throws IOException {
+
+        String jsonString;
+        List<ClientInfo> clientData = new ArrayList<>();
+        for(int i=0; i<listOfDataList.size(); i++)
+        {
+           jsonString = convertToJson(listOfDataList.get(i));
+           validateSchema(jsonString);
+           clientData.add(getClientObject(jsonString));
+
+
+        }
+
+        return clientData;
+    }
+
+    public static String convertToJson(List<Object> data) throws IOException
+
+    {
 
         Map<String,Object> map = new HashMap<>();
+
         map.put("firstName", data.get(0));
         map.put("lastName", data.get(1));
         map.put("phoneNumber", data.get(2));
         map.put("state", data.get(3));
         map.put("zipcode", data.get(4));
-
 
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -97,6 +138,14 @@ public class DataTransformer {
         return json;
     }
 
+    public static void jsonToObject() throws IOException
+
+    {
+
+        FileReader fileReader = new FileReader("/Users/uneebsiddiqui/Desktop/OAS/Java/src/main/resources/file1.json");
+           fileReader.read();
+    }
+
 
     public static void validateSchema(String jsonString) throws FileNotFoundException {
 
@@ -104,12 +153,17 @@ public class DataTransformer {
         JSONTokener schemaData = new JSONTokener(new FileInputStream(schemaFile));
         JSONObject jsonSchema = new JSONObject(schemaData);
 
-        try {
+        try
+
+        {
 
             FileWriter fileWriter = new FileWriter("/Users/uneebsiddiqui/Desktop/OAS/Java/src/main/resources/file1.json");
             fileWriter.write(jsonString);
             fileWriter.close();
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+
+        {
             System.out.println("file not found");
         }
 
