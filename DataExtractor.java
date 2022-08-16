@@ -9,10 +9,18 @@ import com.google.auth.oauth2.GoogleCredentials;
 import java.util.Collections;
 import java.util.List;
 
+ latest-master
+public class DataExtractor
+{
+    public static List<List<Object>> getData(String spreadSheetId, String sheetName, String rangeDataToRead) throws Exception
+
+    {
+
 public class DataExtractor {
 
 
     public static List<List<Object>> getData(String spreadSheetId, String sheetName, String rangeDataToRead) throws Exception {
+ master
         GoogleCredentials credentials = GoogleCredentials.getApplicationDefault()
                 .createScoped(Collections.singleton(SheetsScopes.SPREADSHEETS));
         HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(
