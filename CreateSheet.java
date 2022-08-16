@@ -23,7 +23,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class CreateSheet {
+public class CreateSheet
+{
 
 
 /**
@@ -38,7 +39,8 @@ public class CreateSheet {
 
 
 
-    public static String createSpreadsheet(String title) throws IOException, GeneralSecurityException {
+    public static String createSpreadsheet(String title) throws IOException, GeneralSecurityException
+    {
         /* Load pre-authorized user credentials from the environment.
            TODO(developer) - See https://developers.google.com/identity for
             guides on implementing OAuth2 for your application. */
@@ -48,9 +50,6 @@ public class CreateSheet {
                 .createScoped(Collections.singleton(SheetsScopes.SPREADSHEETS));
         HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(
                 credentials);
-
-
-
 
         // Create the sheets API client
 

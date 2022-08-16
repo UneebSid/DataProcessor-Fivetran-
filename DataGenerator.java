@@ -19,14 +19,11 @@ import java.util.*;
 /* Class to demonstrate the use of Spreadsheet Write API */
 public class DataGenerator {
 
-
-
     public static UpdateValuesResponse updateValues(String spreadsheetId,
                                                     String range,
                                                     String valueInputOption,
-                                                    List<List<Object>> values)
-
-        throws IOException {
+                                                    List<List<Object>> values) throws IOException
+    {
         /* Load pre-authorized user credentials from the environment.
            TODO(developer) - See https://developers.google.com/identity for
             guides on implementing OAuth2 for your application. */
@@ -43,7 +40,9 @@ public class DataGenerator {
                 .build();
 
         UpdateValuesResponse result =null;
-        try {
+
+        try
+        {
             // Updates the values in the specified range.
             ValueRange body = new ValueRange()
                     .setValues(values);
@@ -51,15 +50,24 @@ public class DataGenerator {
                     .setValueInputOption(valueInputOption)
                     .execute();
             System.out.printf("%d cells updated.", result.getUpdatedCells());
-        } catch (GoogleJsonResponseException e) {
+        }
+
+        catch (GoogleJsonResponseException e)
+        {
             // TODO(developer) - handle error appropriately
             GoogleJsonError error = e.getDetails();
-            if (error.getCode() == 404) {
+            if (error.getCode() == 404)
+            {
                 System.out.printf("Spreadsheet not found with id '%s'.\n",spreadsheetId);
-            } else {
+            }
+
+            else
+            {
                 throw e;
             }
+
         }
+
         return result;
     }
 
@@ -67,7 +75,6 @@ public class DataGenerator {
     {
         //string of all numbers 0-9
         String numbers = "0123456789";
-
         StringBuilder stringBuilder = new StringBuilder();
         Random random = new Random();
 
@@ -76,14 +83,13 @@ public class DataGenerator {
             int index = random.nextInt(numbers.length());
             char randomNum = numbers.charAt(index);
             stringBuilder.append(randomNum);
-
         }
 
         return stringBuilder.toString();
     }
 
-    public  String randomStates() throws FileNotFoundException {
-
+    public  String randomStates() throws FileNotFoundException
+    {
         ArrayList<String> states = new ArrayList<>() ;
         File myFile = new File("/Users/uneebsiddiqui/Desktop/OAS/Java/src/main/resources/states.txt");
         Scanner fileReader = new Scanner(myFile);
@@ -91,7 +97,6 @@ public class DataGenerator {
         {
             states.add(fileReader.nextLine());
         }
-
 
         Random random = new Random();
         int randomCountry = random.nextInt(states.size());
@@ -110,10 +115,12 @@ public class DataGenerator {
         {
             int index = random.nextInt(letters.length());
             char randomChar;
-            if(first) {
+            if(first)
+            {
                 randomChar = letters.charAt(index);
                 first = false;
             }
+
             else
             {
                 randomChar = lowerCaseLetters.charAt(index);
@@ -125,45 +132,50 @@ public class DataGenerator {
         return sb.toString();
     }
 
+    public  List<Object> dataGeneration() throws FileNotFoundException
+    {
 
-
-    public  List<Object> dataGeneration() throws FileNotFoundException {
-
-        List<Object> list = new ArrayList<Object>();
-
-
-
+        List<Object> randomDataList = new ArrayList<Object>();
         String firstName = randomStrings();
         String lastName = randomStrings();
         String phone = randomNumericStrings(10);
         String state = randomStates();
 
         String zip = randomNumericStrings(5);
-            list.add(firstName);
-            list.add(lastName);
-            list.add(phone);
-            list.add(state);
-            list.add(zip);
+            randomDataList.add(firstName);
+            randomDataList.add(lastName);
+            randomDataList.add(phone);
+            randomDataList.add(state);
+            randomDataList.add(zip);
 
-        return list;
+        return randomDataList;
     }
 
+    public  List<List<Object>> addDataListToList() throws FileNotFoundException
+    {
+        List<List<Object>>  listOfRandomDataList = new ArrayList<>();
 
-
-
-    public  List<List<Object>> addDataToList() throws FileNotFoundException {
-        List<List<Object>>  theList = new ArrayList<>();
-        for(int i=0; i<10000; i++)
+        for(int i=0; i<10001; i++)
         {
-            List<Object> list = dataGeneration();
+            if(i==0)
+            {
+                List<Object> list = new ArrayList<>();
+                list.add("FirstName");
+                list.add("LastName");
+                list.add("PhoneNumber");
+                list.add("State");
+                list.add("ZIPCODE");
+                listOfRandomDataList.add(list);
+            }
 
-
-            theList.add(list);
-
+            else
+            {
+                List<Object> list = dataGeneration();
+                listOfRandomDataList.add(list);
+            }
         }
 
-        return theList;
+        return listOfRandomDataList;
     }
-
 
 }
